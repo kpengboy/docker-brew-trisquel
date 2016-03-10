@@ -5,7 +5,11 @@ cd "$(readlink -f "$(dirname "$BASH_SOURCE")")"
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
-	versions=( */ )
+	for dir in */; do
+		if [ "$dir" != "docker/" ]; then
+			versions+=( "$dir" );
+		fi
+	done
 fi
 versions=( "${versions[@]%/}" )
 
@@ -65,7 +69,7 @@ for version in "${versions[@]}"; do
 	{
 		echo "$(basename "$mkimage") ${args[*]/"$dir"/.}"
 		echo
-		echo 'https://github.com/docker/docker/blob/master/contrib/mkimage.sh'
+		echo 'https://github.com/kpengboy/docker/blob/master/contrib/mkimage.sh'
 	} > "$dir/build-command.txt"
 	
 	sudo nice ionice -c 3 "$mkimage" "${args[@]}" 2>&1 | tee "$dir/build.log"
