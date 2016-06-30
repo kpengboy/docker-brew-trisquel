@@ -50,7 +50,8 @@ for version in "${versions[@]}"; do
 	components="$(get_part "$dir" components 'main')"
 	include="$(get_part "$dir" include '')"
 	suite="$(get_part "$dir" suite "$version")"
-	mirror="$(get_part "$dir" mirror '')"
+	debootstrap_mirror="$(get_part "$dir" debootstrap-mirror '')"
+	mirror="$(get_part "$dir" mirror "$debootstrap_mirror")"
 	script="$(get_part "$dir" script '')"
 	
 	args=( -d "$dir" debootstrap )
@@ -58,10 +59,13 @@ for version in "${versions[@]}"; do
 	[ -z "$components" ] || args+=( --components="$components" )
 	[ -z "$include" ] || args+=( --include="$include" )
 	args+=( "$suite" )
-	if [ "$mirror" ]; then
-		args+=( "$mirror" )
-		if [ "$script" ]; then
-			args+=( "$script" )
+	if [ "$debootstrap_mirror" ]; then
+		args+=( "$debootstrap_mirror" )
+		if [ "$mirror" ]; then
+			args+=( "$mirror" )
+			if [ "$script" ]; then
+				args+=( "$script" )
+			fi
 		fi
 	fi
 	
