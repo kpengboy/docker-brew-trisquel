@@ -1,0 +1,3 @@
+mkimage.sh --dir . --compression xz debootstrap --variant=minbase --components=main --include=inetutils-ping --force-check-gpg flidas http://mirrors/trisquel http://archive.trisquel.info/trisquel ./trisquel.debootstrap
+
+https://github.com/kpengboy/docker/blob/master/contrib/mkimage.sh
